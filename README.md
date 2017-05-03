@@ -1,3 +1,3 @@
 # MyPowerShell
-My PowerShell code
-This repo contains code snippets used in my presentations and general everyday work
+My PowerShell code snippets and scripts<br>
+This repo contains code snippets used in my presentations and demos', as well as my general everyday work
