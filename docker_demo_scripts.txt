@@ -1,0 +1,10 @@
+docker demo scripts
+
+SQL Express Build
+docker build -t sqlexpress .
+docker run -it -p 1433:1433 sqlexpress cmd
+powershell
+./start
+get-service *sql*
+
+
