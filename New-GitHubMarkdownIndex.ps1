@@ -1,7 +1,9 @@
-﻿Function New-GitHubMarkdownIndex {
+﻿# Thanks to Jaap Brasser
+
+Function New-GitHubMarkdownIndex {
     param(
-        $Path = 'D:\\onedrive\\github\\repo\\nelmediamike\\mypresentations',
-        $GitHubUri = 'https://github.com/nelmediamike/mypresentations/tree/master'
+        $Path = 'D:\\onedrive\\github\\repo\\mikenelson-io\\mypresentations',
+        $GitHubUri = 'https://github.com/mikenelson-io/mypresentations/tree/master'
     )
     Get-ChildItem -LiteralPath $Path | % {
         $GHPath = $_.FullName -replace [regex]::Escape($Path) -replace '\\','/' -replace '\s','%20'

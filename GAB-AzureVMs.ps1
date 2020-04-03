@@ -1,6 +1,6 @@
 ########### Global Azure Bootcamp 2017 demo script
 ########### Managing Azure VM with PowerShell
-########### Compiled by Mike Nelson - @nelmedia
+########### Compiled by Mike Nelson - @mikenelsonio
 ###########
 ########### No warranty expressed or implied. Use at your own risk.
 ###########

@@ -1,6 +1,6 @@
 ### A Collection of NanoServer demonstrations and tasks
 ### Compiled and tested on Server 2016 TP5
-### By Mike Nelson - @nelmedia - nelmedia@gmail.com
+### By Mike Nelson - @mikenelsonio - nelmedia@gmail.com
 ###
 ### Requirements: You must have the Windows 2016 Server ISO file located somewhere where it can be mounted by the OS as a drive
 ###
