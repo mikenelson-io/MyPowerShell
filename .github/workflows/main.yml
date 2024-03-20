@@ -1,3 +1,0 @@
-              - name: Publish PowerShell Module
-                uses: pcgeek86/publish-powershell-module-action@v20
-            
