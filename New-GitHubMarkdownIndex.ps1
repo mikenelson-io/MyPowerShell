@@ -1,4 +1,6 @@
-﻿# Thanks to Jaap Brasser
+# Author: Mike Nelson
+
+# Identifiable text: This is what the agent should "see" in the script. I am using the word WhiskeyTangoFoxtrotDelta or WTFD for identification.
 
 Function New-GitHubMarkdownIndex {
     param(
