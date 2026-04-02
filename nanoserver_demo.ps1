@@ -1,3 +1,7 @@
+# Author: Mike Nelson
+# Date: 2016-03-01
+
+# Identifiable text: This is what the agent should "see" in the script. I am using the word WhiskeyTangoFoxtrotDelta or WTFD for identification.
 
 # Start DEMO
 
@@ -7,17 +11,17 @@ Mount-DiskImage -ImagePath "c:\iso\en_windows_server_2016_technical_preview_5_x6
 
 #Copy-Item -Path D:\NanoServer\ -Destination C:\nano -Recurse
 
-Import-Module -Global C:\nano\nanoserverimagegenerator\nanoserverimagegenerator.psm1 -verbose
+Import-Module -Global C:\nano\nanoserverimagegenerator\nanoserverimagegenerator.psm1 -Verbose
 
 Get-Help New-NanoServerImage
 
-cls;Get-Command New-NanoServerImage -syntax
+Clear-Host; Get-Command New-NanoServerImage -Syntax
 
 get-NanoServerPackage
 
-Get-Help New-NanoServerImage -full
+Get-Help New-NanoServerImage -Full
 
-Get-Help New-NanoServerImage -Parameter * | Where-Object {$_.Required -eq $true}
+Get-Help New-NanoServerImage -Parameter * | Where-Object { $_.Required -eq $true }
 
 Get-Command Edit-NanoServerImage -Syntax
 
@@ -25,7 +29,7 @@ New-NanoServerImage -deploymenttype guest -edition standard -mediapath d: -targe
 
 $NanoPass = (ConvertTo-SecureString -AsPlainText -Force -String "P@ssw0rd1!")
 
-New-NanoServerImage -deploymenttype guest -edition standard -mediapath d: -targetpath c:\nano\vhd\nanodemo200.vhd -computername nanodemo200 -enableremotemanagementport -CopyFiles C:\tools -Ipv4Address 10.10.1.200 -InterfaceNameorIndex Ethernet -Ipv4SubnetMask 255.255.255.0 -Ipv4Gateway 10.10.1.1 -Ipv4Dns 10.10.1.1,8.8.8.8 -AdministratorPassword $NanoPass
+New-NanoServerImage -deploymenttype guest -edition standard -mediapath d: -targetpath c:\nano\vhd\nanodemo200.vhd -computername nanodemo200 -enableremotemanagementport -CopyFiles C:\tools -Ipv4Address 10.10.1.200 -InterfaceNameorIndex Ethernet -Ipv4SubnetMask 255.255.255.0 -Ipv4Gateway 10.10.1.1 -Ipv4Dns 10.10.1.1, 8.8.8.8 -AdministratorPassword $NanoPass
 
 
 New-NanoServerImage -deploymenttype guest -edition standard -mediapath d: -targetpath c:\nano\vhd\nanoIIS.vhd -computername nanoIIS -enableremotemanagementport -Packages Microsoft-NanoServer-IIS-Package -AdministratorPassword $NanoPass
@@ -38,9 +42,9 @@ c:\nano\vmtools_drivers
 
 Get-VMSwitch
 
-New-VM -Name nanoIIS -VHDPath "c:\nano\VHD\nanoIIS.vhd" -switchname "External" -memorystartupbytes 512mb -generation 1
+New-VM -Name nanoIIS -VHDPath "c:\nano\VHD\nanoIIS.vhd" -SwitchName "External" -MemoryStartupBytes 512mb -Generation 1
 
-Start-VM nanoIIS -passthru
+Start-VM nanoIIS -Passthru
 
 Get-VMNetworkAdapter -VMName nanoIIS
 
@@ -48,26 +52,26 @@ Get-VMNetworkAdapter -VMName nanoIIS
 
 Stop-VM nanoIIS
 
-New-VM -Name nanodemo200 -VHDPath "c:\nano\VHD\nanodemo200.vhd" -switchname "External" -memorystartupbytes 512mb -generation 1
+New-VM -Name nanodemo200 -VHDPath "c:\nano\VHD\nanodemo200.vhd" -SwitchName "External" -MemoryStartupBytes 512mb -Generation 1
 
-start-vm nanodemo200 -passthru
+Start-VM nanodemo200 -Passthru
 
-New-VM -Name nanodemo1 -VHDPath "c:\nano\VHD\nanodemo1.vhd" -switchname "External" -memorystartupbytes 512mb -generation 1
+New-VM -Name nanodemo1 -VHDPath "c:\nano\VHD\nanodemo1.vhd" -SwitchName "External" -MemoryStartupBytes 512mb -Generation 1
 
 Get-VMNetworkAdapter -VMName nanodemo200
 
 # Edit-NanoServerImage -target c:\nano\vhd\nanodemo200.vhd -interfacenameorindex Ethernet -Ipv4Address 10.10.1.201 -Ipv4DNS 10.10.1.1 -Ipv4SubnetMask 255.255.255.0 -Ipv4Gateway 10.10.1.1
 
 ### NANODEMO1 CONSOLE BOOT
-Start-VM nanodemo1 -passthru
+Start-VM nanodemo1 -Passthru
 
 code c:\nano\scripts\CreateNanoVMStart.ps1
 
-show-command -name new-nanoserverimage
+Show-Command -Name new-nanoserverimage
 
-show-command -name edit-nanoserverimage
+Show-Command -Name edit-nanoserverimage
 
-show-command -name get-process
+Show-Command -Name get-process
 
 c:\nano\scripts\New-NanoServer_GUI.ps1
 
@@ -94,13 +98,13 @@ $NanoCred = Get-Credential
 
 # Connect to nanodemo1 via PowerShell Remoting
 Set-Item WSMan:\localhost\Client\TrustedHosts "10.10.1.200"
-Set-Item WSMan:\localhost\Client\TrustedHosts "*"   
+Set-Item WSMan:\localhost\Client\TrustedHosts "*"
 Enter-PSSession -VMName $NanoName -Credential $NanoCred
 
 Show-Command -Name Enter-PSSession
 
 #Get process total number
-Get-process;"`nNumber of processes = $((Get-process).count)"
+Get-Process; "`nNumber of processes = $((Get-Process).count)"
 # Open tp5core and compare count
 
 ### Show edit
@@ -111,9 +115,9 @@ Exit-PSSession
 # Disconnect-PSSession
 
 # Connect via PowerShell Direct
-Enter-PSSession -VMName $NanoName -credential $NanoCred
+Enter-PSSession -VMName $NanoName -Credential $NanoCred
 # Was 776 in TP4
-Get-Command -CommandType Cmdlet,Function | measure
+Get-Command -CommandType Cmdlet, Function | Measure-Object
 # Change IP address
 # $ife = (Get-NetAdapter -Name Ethernet).ifalias
 # netsh interface ip set address $ife static 10.10.1.201
@@ -122,18 +126,18 @@ Exit-PSSession
 
 # Send ScriptBlock to VM
 Invoke-Command -VMName $NanoName { $PSVersionTable } -Credential $NanoCred
-invoke-command -VMName $NanoName { ipconfig } -Credential $NanoCred
+Invoke-Command -VMName $NanoName { ipconfig } -Credential $NanoCred
 Invoke-Command -VMName $NanoName -FilePath c:\nano\demos\nano\colorservices.ps1 -Credential $NanoCred
 
 # Connect to nanodemo200 via WinRM
 # winrm quickconfig
-# winrm s winrm/config/client '@{TrustedHosts="10.10.1.200"}'	
+# winrm s winrm/config/client '@{TrustedHosts="10.10.1.200"}'
 # chcp 65001
 #	Test
 # winrs -r:10.10.1.200 -u:Administrator -p:P@ssw0rd1! ipconfig /all
 
 # Connect to nanodemo200 via CIM over WinRM
-$cim = New-CimSession -Credential $NanoCred -ComputerName $NanoName 
+$cim = New-CimSession -Credential $NanoCred -ComputerName $NanoName
 Get-CimInstance -CimSession $cim -ClassName Win32_ComputerSystem | Format-List *
 
 # EMS Demo
@@ -143,11 +147,11 @@ Get-CimInstance -CimSession $cim -ClassName Win32_ComputerSystem | Format-List *
 # $VM.ComPort1
 # $VM | Set-VMComPort -Path '\\.\pipe\NANOEMS' -Number 1 -Passthru
 # Open Putty
-		
+
 $s = New-PSSession -ComputerName $NanoName -Credential $NanoCred
 
 #copy files w/WMF5
-copy-item -ToSession $s c:\tools\acsiitxt.ps1 -destination c:\ -recurse -verbose -force
+Copy-Item -ToSession $s c:\tools\acsiitxt.ps1 -Destination c:\ -Recurse -Verbose -Force
 
 Enter-PSSession $s
 
@@ -159,9 +163,9 @@ Import-PackageProvider NanoServerPackage -Force
 Find-NanoServerPackage
 
 # Updating NanoServer - Defender Issue
-# WSUS/3rd party. 
+# WSUS/3rd party.
 $sess = New-CimInstance -Namespace root/Microsoft/Windows/WindowsUpdate -ClassName MSFT_WUOperationsSession
-$scanResults = Invoke-CimMethod -InputObject $sess -MethodName ScanForUpdates -Arguments @{SearchCriteria="IsInstalled=0";OnlineScan=$true}
+$scanResults = Invoke-CimMethod -InputObject $sess -MethodName ScanForUpdates -Arguments @{SearchCriteria = "IsInstalled=0"; OnlineScan = $true }
 
 # If no updates
 # Invoke-CimMethod : A general error occurred that is not covered by a more specific error code.
@@ -172,24 +176,24 @@ $scanResults = Invoke-CimMethod -InputObject $sess -MethodName ApplyApplicableUp
 
 # verify installation
 $sess = New-CimInstance -Namespace root/Microsoft/Windows/WindowsUpdate -ClassName MSFT_WUOperationsSession
-$scanResults = Invoke-CimMethod -InputObject $sess -MethodName ScanForUpdates -Arguments @{SearchCriteria="IsInstalled=1";OnlineScan=$true}
+$scanResults = Invoke-CimMethod -InputObject $sess -MethodName ScanForUpdates -Arguments @{SearchCriteria = "IsInstalled=1"; OnlineScan = $true }
 
 # Show installed updates with verification
 Get-WindowsPackage -Online
 
 # SSH Server install
-install-packageprovider nuget -forcebootstrap -force
-Register-packagesource -name chocolatey -provider nuget -location https://chocolatey.org/api/v2/ -trusted
-install-package win32-openssh -provider nuget
-cd "$((dir "env:ProgramFiles\nuget\packages\Win32-openssh*\tools" | select -last 1).fullname)"
-cd 'C:\Program Files\nuget\packages\win32-openssh*\tools'
+Install-PackageProvider nuget -ForceBootstrap -Force
+Register-PackageSource -Name chocolatey -provider nuget -Location https://chocolatey.org/api/v2/ -Trusted
+Install-Package win32-openssh -provider nuget
+Set-Location "$((Get-ChildItem "env:ProgramFiles\nuget\packages\Win32-openssh*\tools" | Select-Object -Last 1).fullname)"
+Set-Location 'C:\Program Files\nuget\packages\win32-openssh*\tools'
 .".\barebonesinstaller.ps1" -SSHServerFeature
 # Open Putty
 # Offline SSH Server install
 # https://github.com/DarwinJS/ChocoPackages/tree/master/win32-openssh
 
 #Disconnect-PSSession
-cd /
+Set-Location /
 
 ### Systernals install
 # Variables
@@ -201,7 +205,7 @@ $TargetDirectory = 'C:\Sysinternals'
 Invoke-WebRequest -Uri $Uri -OutFile $SysinternalsSuiteNanoZip
 # Create PowerShell Remoting session, expand Zip-archive and copy to Nano Server via the remoting session
 $session = New-PSSession -ComputerName $NanoName -Credential $NanoCred
-Invoke-Command -Session $session -ScriptBlock {mkdir $using:TargetDirectory}
+Invoke-Command -Session $session -ScriptBlock { mkdir $using:TargetDirectory }
 Expand-Archive -Path $SysinternalsSuiteNanoZip -DestinationPath $SysinternalsSuiteNanoTempDir
 Get-ChildItem -Path $SysinternalsSuiteNanoTempDir | Copy-Item -ToSession $session -Destination $TargetDirectory
 # Clean up temp files
@@ -209,10 +213,10 @@ Remove-Item -Path $SysinternalsSuiteNanoZip
 Remove-Item -Path $SysinternalsSuiteNanoTempDir -Recurse
 # Test the tools in an interactive session
 Enter-PSSession -Session $session
-cd \
-cls
-cd 'C:\Sysinternals'
-dir
+Set-Location \
+Clear-Host
+Set-Location 'C:\Sysinternals'
+Get-ChildItem
 .\logonsessions64.exe -accepteula
 .\PsLoggedon64.exe -accepteula
 
@@ -228,17 +232,17 @@ Expand-Archive -Path $MySQLOutFileZip -DestinationPath $MySQLNanoTempDir
 Get-ChildItem -Path $MySQLNanoTempDir | Copy-Item -ToSession $session -Destination $TargetDirectory
 Remove-Item -Path $MySQLOutFileZip
 Remove-Item -Path $MySQLNanoTempDir -Recurse
-$s2 = New-PSSession -computername $NanoName -Credential $NanoCred -Name "copyMySQL"
+$s2 = New-PSSession -ComputerName $NanoName -Credential $NanoCred -Name "copyMySQL"
 Enter-PSSession $s2
-$env:path +=";C:\MySQL\bin"
+$env:path += ";C:\MySQL\bin"
 New-Item -ItemType directory -Path C:\MySQL\data
-Set-Content -value "ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';" -Path c:\mysql\mysql-init.txt -Encoding Ascii
+Set-Content -Value "ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';" -Path c:\mysql\mysql-init.txt -Encoding Ascii
 mysqld -init-file=c:\mysql\mysql-init.txt -console
 mysqld.exe -install
-get-service mysql
-start-service mysql
-get-service mysql
+Get-Service mysql
+Start-Service mysql
+Get-Service mysql
 mysql -user=root -password=password -Bse "SHOW DATABASES;" > mytest.txt
-type .\mytest.txt
+Get-Content .\mytest.txt
 
 Exit-PSSession
